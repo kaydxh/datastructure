@@ -76,6 +76,7 @@ public:
 	void insert(T);
 	T getMax();
 	T delMax();
+	bool empty();
 
 	void Print();
 
@@ -83,6 +84,11 @@ private:
 	vector<T> elems;
 
 };
+
+template <typename T>
+bool PQ_ComplHeap<T>::empty() {
+	return elems.empty();
+}
 
 template <typename T>
 T PQ_ComplHeap<T>::getMax() {
@@ -152,10 +158,19 @@ void PQ_ComplHeap<T>::Print() {
 	cout << endl;
 }
 
+template <typename T>
+void heapSort(T* a, int lo, int hi) {
+	PQ_ComplHeap<T> H(a + lo, hi - lo);
+	while( !H.empty()) {
+		a[--hi] = H.delMax();
+	}
+}
+
 int main() {
 
 	int a[] = {2,1,6,3,9,7,4,8,5};
-	PQ_ComplHeap<int> heap(a, sizeof(a)/sizeof(int));
+	int len = sizeof(a)/sizeof(int);
+	PQ_ComplHeap<int> heap(a, len);
 
 	heap.Print(); //9 8 7 5 1 6 4 3 2 
 
@@ -164,6 +179,15 @@ int main() {
 
 	heap.delMax();
 	heap.Print(); //9 8 7 5 1 6 4 3 2
+
+	//sort
+
+	heapSort<int>(a, 0, len);
+	for (int i = 0; i < len; ++i) {
+		cout << a[i] << " ";
+	}
+
+ 	cout << endl;
 
 	return 0;
 }
