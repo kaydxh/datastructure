@@ -72,9 +72,16 @@ bool AVL<T>::remove (const T& e) {
 
 	for (BinNode<T> * g = this->_hot; g; g = g->parent) {
 		if (!AvlBalanced(*g)) { //失衡
-			//g = FromParentTo(*g) = this->rotateAt(tallerChild(tallerChild(g))); //将g的父亲的孩子连接平衡后的局部子树
-			BinNode<T> * subRoot = this->rotateAt(tallerChild(tallerChild(g)));
-			FromParentTo(*subRoot) = subRoot;
+			 //将g的父亲的孩子连接平衡后的局部子树
+			if (!g->parent) {
+				g = this->_root = this->rotateAt(tallerChild(tallerChild(g)));
+			} else if (IsLChild(*g))  {  //如果g是左孩子，通过g的父亲的左孩子连接平衡后的新的子树的根节点
+    			BinNode<T>* p = g->parent;  
+     			g = p->lc = this->rotateAt ( tallerChild ( tallerChild ( g ) ) );  
+ 			} else {  //如果g是右孩子，通过g的父亲的右孩子连接平衡后的新的子树的根节点
+     			BinNode<T>* p = g->parent;  
+     			g = p->rc = this->rotateAt ( tallerChild ( tallerChild ( g ) ) );  
+ 			}
 		}
 
 		this->updateHeight(g);
