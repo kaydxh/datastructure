@@ -16,11 +16,11 @@ void precolateDown(int *a, int len, int parent) {
 		}
 
 		//a[child]为左右孩子中最大者
-		if (a[child] > a[parent]) {
+		if (a[child] > a[parent]) {//如果孩子的最大者大于父亲，那么就交换孩子和父亲
 			::swap(a[child], a[parent]);
-			parent = child;
-			child = 2 * parent + 1;
-		} else {
+			parent = child; // 更新父亲索引，
+			child = 2 * parent + 1; //更新左孩子索引
+		} else { //如果父亲大于孩子的节点，那么堆秩序性就满足，然后break
 			break;
 		}
 	}
@@ -28,15 +28,15 @@ void precolateDown(int *a, int len, int parent) {
 
 //最大堆
 void buildHeap(int* a, int n) {
-	for (int i = n - 2; i >= 0; --i) {
+	for (int i = n - 2; i >= 0; --i) {//从n-2开始，父节点最大为n-2（n的节点，最大节点为n-1，最大父节点为n-2）
 		precolateDown(a, n, i);
 	}
 }
 
 void heapSort(int* a, int n) {
-	buildHeap(a, n);
+	buildHeap(a, n);//最大堆建完后，最大者在第0位，所以需要和将第0位与最后一位交换（最大者归位），然后在进行下滤，保持堆秩序性
 	int end = n - 1;
-	while (end > 0) {
+	while (end > 0) 
 		::swap(a[0], a[end]);
 		precolateDown(a, end, 0);
 		--end;
